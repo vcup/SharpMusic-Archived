@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CSCore.Tags.ID3.Frames;
 
-namespace SharpMusic.Information
+namespace SharpMusic.Backend.Information
 {
-    public class Playlist : IInformation
+    public class Playlist : InformationBase
     {
         private string _name;
         private string _description;

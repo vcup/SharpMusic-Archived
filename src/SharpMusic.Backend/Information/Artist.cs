@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace SharpMusic.Information
+namespace SharpMusic.Backend.Information
 {
-    public class Artist : IInformation
+    public class Artist : InformationBase
     {
         private string _name;
         private List<string> _nickNames;
@@ -16,6 +13,10 @@ namespace SharpMusic.Information
 
         public Artist()
         {
+            _nickNames = new();
+            _albums = new();
+            _albums = new();
+            
             _allArtists.Add(this);
             foreach (var album in Albums)
             foreach (var music in album.Tracks.Where(x => x.Artists.Contains(this)))
@@ -28,23 +29,17 @@ namespace SharpMusic.Information
             set => _name = value;
         }
 
-        public IEnumerable<string> NickNames
+        public IList<string> NickNames
         {
             get => _nickNames;
         }
-        [JsonIgnore]
-        public IEnumerable<Album> Albums
+        public IList<Album> Albums
         {
             get => _albums;
         }
 
-        public IEnumerable<int> AlbumHashCodes
-        {
-            get => Albums.Select(x => x.GetHashCode());
-        }
 
-        [JsonIgnore]
-        public IEnumerable<Music> Musics
+        public IList<Music> Musics
         {
             get => _musics;
         }

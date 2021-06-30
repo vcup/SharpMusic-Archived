@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using CSCore.Codecs.RAW;
 
-namespace SharpMusic.Information.PlayExtension
+namespace SharpMusic.Backend.Information.PlayExtension
 {
     public static class PlaylistExtension
     {
@@ -21,13 +20,13 @@ namespace SharpMusic.Information.PlayExtension
             }
         }
 
-        delegate int rand();
+        delegate int Rand();
 
         private static Random _random = new();
 
         public static IEnumerable<Music> RandomPlay(this Playlist playlist)
         { 
-            rand rand = () => _random.Next(0, playlist.Count - 1);
+            Rand rand = () => _random.Next(0, playlist.Count - 1);
             PlayingIndexs.TryAdd(playlist, rand());
             while (true)
             {

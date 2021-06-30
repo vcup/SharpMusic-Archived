@@ -1,131 +1,182 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using CSCore.CoreAudioAPI;
-using CSCore.SoundOut;
-using SharpMusic.Information;
-using SharpMusic.Information.PlayExtension;
+using System.Threading;
+using System.Threading.Tasks;
+using ManagedBass;
+using SharpMusic.Backend.Information;
+using SharpMusic.Backend.Information.PlayExtension;
+using SharpMusic.Backend.Play.BassManaged;
 
-namespace SharpMusic.Play
+namespace SharpMusic.Backend.Play
 {
     public class Player
     {
-        private ISoundOut _waveOut;
-        private MMDevice _device;
-        private List<Music> PlayingList = new();
-        private int PlayingIndex = -1;
-        private IEnumerator<Music> musicEnumerator;
-        public Playlist Playlist;
-
+        private Channel _channel = new();
+        private readonly List<Music> _playingList = new();
+        private int _playingIndex = -1;
+        private IEnumerator<Music> _musicEnumerator;
+        private Playlist _playlist;
+        
         public Player(Playlist playlist)
         {
-            var devices = new MMDeviceEnumerator();
-            _device = devices.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-
-            _waveOut = new WasapiOut() {Device = _device, Latency = 100};
-            musicEnumerator = playlist.RankPlay().GetEnumerator();
-            Playlist = new Playlist(playlist);
+            _musicEnumerator = playlist.RankPlay().GetEnumerator();
+            _playlist = new Playlist(playlist);
             MoveNext();
         }
 
         #region PlayFunc
+
         public void Play()
         {
             if (State == PlaybackState.Playing)
                 Stop();
-            _waveOut.Initialize(PlayingMusic.GetWaveSource());
-            _waveOut.Play();
+            _channel.Sound = new Sound(PlayingMusic.StreamUri);
+            _channel.Play();
+            _channel.SetEndedEvent(() =>
+                {
+                    if (AutoNext)
+                        PlayNext();
+                }
+            );
         }
 
-        public void Pause() => _waveOut.Pause();
-        
-        public void Resume() => _waveOut.Resume();
+        public void Pause() => _channel.Pause();
 
-        public void Stop()
-        {
-            _waveOut.Stop();
-        }
+        public void Resume() => _channel.Resume();
+
+        public void Stop() => _channel.Stop();
 
         public void PlayPrev()
         {
             MovePrev();
             Play();
         }
+
         public void PlayNext()
         {
             MoveNext();
             Play();
         }
+
         #endregion
-
-
+        
         #region Playing
-        public Music MovePrev() => PlayingList[
-            PlayingIndex == 0 ? PlayingIndex = (PlayingList.Count - 1) : PlayingIndex--
-        ];
 
-        public Music MoveNext()
+        public void MovePrev()
         {
-            if (!musicEnumerator.MoveNext())
-                musicEnumerator.Reset();
-            PlayingList.Add(musicEnumerator.Current);
-            return PlayingList[++PlayingIndex];
+            if (_playingIndex == 0)
+            {
+                _playingIndex = _playingList.Count - 1;
+            }
+            else
+            {
+                _playingIndex--;
+            }
+        }
+
+        public void MoveNext()
+        {
+            if (_playingIndex == _playingList.Count - 1)
+            {
+                if (!_musicEnumerator.MoveNext())
+                    return;
+                _playingList.Add(_musicEnumerator.Current);
+                _playingIndex++;
+            }
+            else
+            {
+                _playingIndex++;
+            }
         }
 
         public Music PlayingMusic
         {
-            get => PlayingList[PlayingIndex];
+            get => _playingList[_playingIndex];
             set
             {
-                if (PlayingList.Contains(value))
+                if (_playingList.Contains(value))
                 {
-                    PlayingIndex = PlayingList.IndexOf(value);
+                    _playingIndex = _playingList.IndexOf(value);
                     return;
                 }
-                
-                PlayingIndex = PlayingList.Count;
-                PlayingList.Add(value);
+
+                _playingIndex = _playingList.Count;
+                _playingList.Add(value);
             }
         }
-        public PlaybackState State
-        {
-            get => _waveOut.PlaybackState;
-        }
+
         #endregion
+
+        #region PlayState
+
+        public PlaybackState State => _channel.State;
+
+        public TimeSpan PlayTime => _channel.PlayTime;
+
+        public TimeSpan Position
+        {
+            get => _channel.Position;
+            set => _channel.Position = value;
+        }
+
+        public double Volume
+        {
+            get => _channel.Volume;
+            set => _channel.Volume = value;
+        }
+
+        public bool AutoNext { get; set; } = true;
+
+        #endregion
+        
+        #region SetPlayerState
 
         public void ClearUp()
         {
-            PlayingList.Clear();
-            PlayingIndex = 0;
+            _playingList.Clear();
+            _playingIndex = 0;
         }
 
         public void UseRankMode()
         { 
             ClearUp();
-            musicEnumerator = Playlist.RankPlay().GetEnumerator();
+            _musicEnumerator = _playlist.RankPlay().GetEnumerator();
         }
 
         public void UseRandomMode()
         {
             ClearUp();
-            musicEnumerator = Playlist.RandomPlay().GetEnumerator();
+            _musicEnumerator = _playlist.RandomPlay().GetEnumerator();
         }
 
         public void UseLoopMode()
         {
-            musicEnumerator = Playlist.SingleLoopPlay().GetEnumerator();
+            _musicEnumerator = _playlist.SingleLoopPlay().GetEnumerator();
         }
         
         public void UseAssignPlayMode(IEnumerable<Music> assign)
         {
             ClearUp();
-            musicEnumerator = assign.GetEnumerator();
+            _musicEnumerator = assign.GetEnumerator();
         }
 
         public void AddMusicToPlaying(Music music) =>
-            PlayingList.Insert(PlayingIndex + 1, music);
+            _playingList.Insert(_playingIndex + 1, music);
 
         public void AddManyMusicToPlaying(IEnumerable<Music> musics) =>
-            PlayingList.InsertRange(PlayingIndex + 1, musics);
+            _playingList.InsertRange(_playingIndex + 1, musics);
+
+        public Playlist Playlist
+        {
+            get => _playlist;
+            set
+            {
+                ClearUp();
+                _playlist = value;
+            }
+        }
+        
+        #endregion
+        
     }
 }

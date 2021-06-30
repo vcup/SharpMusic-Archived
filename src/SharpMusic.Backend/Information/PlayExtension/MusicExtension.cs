@@ -1,11 +1,9 @@
-using CSCore;
-using CSCore.Codecs;
+using SharpMusic.Backend.Play;
 
-namespace SharpMusic.Information.PlayExtension
+namespace SharpMusic.Backend.Information.PlayExtension
 {
     public static class MusicExtension
     {
-        public static IWaveSource GetWaveSource(this Music music) =>
-            CodecFactory.Instance.GetCodec(music.StreamUri);
+        
     }
 }

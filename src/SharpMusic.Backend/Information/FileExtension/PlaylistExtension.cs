@@ -1,4 +1,4 @@
-namespace SharpMusic.Information.FileExtension
+namespace SharpMusic.Backend.Information.FileExtension
 {
     public class PlaylistExtension
     {

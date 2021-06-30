@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace SharpMusic.Information.FileExtension
+namespace SharpMusic.Backend.Information.FileExtension
 {
     public static class InformationExtension
     {
