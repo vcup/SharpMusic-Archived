@@ -19,7 +19,6 @@ namespace SharpMusic.Backend.Disk
             Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
                 .Where(s => FilePattern.Any(es => s.EndsWith(es.Remove(0, 1))));
 
-
         public static Music MakeMusicFormFilePath(string filePath)
         {
             Music music = new() {StreamUri = new Uri(Path.GetFullPath(filePath))};
@@ -79,6 +78,7 @@ namespace SharpMusic.Backend.Disk
                     {
                         var artist = new Artist() {Name = artistName};
                         artist.Albums.Add(music.Album);
+                        music.Artists.Add(artist);
                     }
                 }
                 else

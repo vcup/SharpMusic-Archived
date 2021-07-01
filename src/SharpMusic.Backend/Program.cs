@@ -27,7 +27,9 @@ namespace SharpMusic.Backend
                 Console.ReadKey();
                 player.PlayNext();
                 Console.Clear();
-                Console.Write($"\r{player.PlayingMusic.Name}");
+                Console.Write(
+                    $"\r{player.PlayingMusic.Name} - {string.Join(" | ", player.PlayingMusic.Artists.Select(a => a.Name))}"
+                    );
             }
         }
     }
