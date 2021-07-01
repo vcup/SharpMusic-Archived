@@ -17,13 +17,18 @@ namespace SharpMusic.Backend
             string.Join(';', Bass.PluginGetInfo(pid).Formats.Select(f => f.FileExtensions))
                 .Split(';').Select(LoadAudioFile.FilePattern.Add).ToArray();
 
-            var musics = LoadAudioFile.FromDirectory("./Musics").Select(LoadAudioFile.MakeMusicFormFilePath);
             var playlist = new Playlist() {Name = "test", Description = "a Test Playlist"};
-            playlist.Add(musics);
+            playlist.Add(LoadAudioFile.LoadMusicFrom(@"C:\CloudMusic"));
             var player = new Player(playlist);
             
             player.Play();
-            Console.ReadKey();
+            while (true)
+            {
+                Console.ReadKey();
+                player.PlayNext();
+                Console.Clear();
+                Console.Write($"\r{player.PlayingMusic.Name}");
+            }
         }
     }
 }
