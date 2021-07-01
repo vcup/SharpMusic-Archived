@@ -30,6 +30,10 @@ namespace SharpMusic.Backend.Play
         {
             if (State == PlaybackState.Playing)
                 Stop();
+            else if (_playingList.Count is 0)
+            {
+                throw new ArgumentException("The playlist must be filled before it can start playing");
+            }
             _channel.Sound = new Sound(PlayingMusic.StreamUri);
             _channel.Play();
             _channel.SetEndedEvent(() =>
@@ -76,7 +80,9 @@ namespace SharpMusic.Backend.Play
 
         public void MoveNext()
         {
-            if (_playingIndex == _playingList.Count - 1)
+            if (_playlist.Count == 0)
+                return;
+            else if (_playingIndex == _playingList.Count - 1)
             {
                 if (!_musicEnumerator.MoveNext())
                     return;
@@ -109,7 +115,11 @@ namespace SharpMusic.Backend.Play
 
         #region PlayState
 
-        public PlaybackState State => _channel.State;
+        public PlaybackState State
+        {
+            get => _channel.State;
+            set => _channel.State = value;
+        }
 
         public TimeSpan PlayTime => _channel.PlayTime;
 
