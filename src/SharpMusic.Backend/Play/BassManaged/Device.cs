@@ -68,10 +68,7 @@ namespace SharpMusic.Backend.Play.BassManaged
                 {
                     if (!(_initialized = Bass.Init(_handle)))
                     {
-                        switch (Bass.LastError)
-                        {
-
-                        }
+                        throw new BassException();
                     }
                 }
 

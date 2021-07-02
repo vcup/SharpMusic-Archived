@@ -1,14 +1,14 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace SharpMusic.Backend.Information
 {
-    public class Album : InformationBase
+    [Serializable]
+    public class Album : InformationBase, ISerializable
     {
-        private string _name;
         private List<string> _aliasNames;
         private List<Music> _tracks;
         private List<Artist> _artists;
@@ -19,24 +19,36 @@ namespace SharpMusic.Backend.Information
             (_aliasNames, _tracks, _artists) = (new(), new(), new());
             AllAlbums.Add(this);
         }
+
+        public Album(SerializationInfo info, StreamingContext context)
+        {
+            Name = (string)info.GetValue("Name", typeof(string));
+            _aliasNames = (List<string>) info.GetValue("AliasName", typeof(List<string>));
+            _tracks = (List<Music>) info.GetValue("Track", typeof(List<Music>));
+            _artists = (List<Artist>) info.GetValue("Artists", typeof(List<Artist>));
+            ReleaseDate = (DateTime) info.GetValue("ReleaseDate", typeof(DateTime))!;
+
+            AllAlbums.Add(this);
+        }
         
-        public string Name
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            get => _name;
-            set => _name = value;
+            info.AddValue("Name"       , Name       , typeof(string));
+            info.AddValue("ReleaseDate", ReleaseDate, typeof(DateTime));
+            info.AddValue("Track"      , Tracks     , typeof(List<Music>));
+            info.AddValue("Artists"    , Artists    , typeof(List<Artist>));
+            info.AddValue("AliasName"  , AliasName  , typeof(List<string>));
         }
+        
+        public string Name { get; set; }
 
-        public IList<string> AliasName
-        {
-            get => _aliasNames;
-        }
+        public IList<string> AliasName => _aliasNames;
 
-        [JsonIgnore]
         public IList<Music> Tracks => _tracks;
 
         public IList<Artist> Artists => _artists;
 
-        public int Lenght => Tracks.Count();
+        public int Lenght => Tracks.Count;
 
         public TimeSpan TotalTime
         {

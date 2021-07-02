@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace SharpMusic.Backend.Information
 {
-    public class Playlist : InformationBase
+    [Serializable]
+    public class Playlist : InformationBase, ISerializable
     {
-        private string _name;
-        private string _description;
         private List<Music> _musics = new();
         public static readonly HashSet<Playlist> AllPlaylists = new();
 
         public Playlist()
         {
-            _name = _description = String.Empty;
             AllPlaylists.Add(this);
         }
 
@@ -21,30 +20,37 @@ namespace SharpMusic.Backend.Information
         {
             Name = playlist.Name;
             Description = playlist.Description;
-            Musics = playlist.Musics.ToList();
+            _musics = playlist.Musics.ToList();
             AllPlaylists.Add(this);
         }
-        public string Name
+
+        #region Serialization
+
+        public Playlist(SerializationInfo info, StreamingContext context)
         {
-            get => _name;
-            set => _name = value;
+            Name        = (string)      info.GetValue("Name"       , typeof(string)     );
+            _musics     = (List<Music>) info.GetValue("Music"      , typeof(List<Music>));
+            Description = (string)      info.GetValue("Description", typeof(string)     );
+            
+            AllPlaylists.Add(this);
         }
 
-        public string Description
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            get => _description;
-            set => _description = value;
+            info.AddValue("Name"       , Name       , typeof(string)     );
+            info.AddValue("Music"      , Musics     , typeof(List<Music>));
+            info.AddValue("Description", Description, typeof(string)     );
         }
 
-        public IList<Music> Musics
-        {
-            get => _musics;
-            set => _musics = value.ToList();
-        }
-        public int Count
-        {
-            get => Musics.Count;
-        }
+        #endregion
+        
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public IList<Music> Musics => _musics;
+
+        public int Count => Musics.Count;
 
         public TimeSpan TotalPlaytime
         {

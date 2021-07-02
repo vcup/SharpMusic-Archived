@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using SharpMusic.Backend.Disk;
 using SharpMusic.Backend.Information;
-using TagLib.Matroska;
 
 namespace SharpMusic.Backend.UnitTests
 {

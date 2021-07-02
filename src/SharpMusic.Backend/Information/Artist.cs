@@ -1,11 +1,14 @@
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace SharpMusic.Backend.Information
 {
-    public class Artist : InformationBase
+    [Serializable]
+    public class Artist : InformationBase, ISerializable
     {
-        private string _name;
         private List<string> _nickNames;
         private List<Album> _albums;
         private List<Music> _musics;
@@ -23,25 +26,32 @@ namespace SharpMusic.Backend.Information
                 _musics.Add(music);
         }
 
-        public string Name
+        #region Serializeble
+
+        public Artist(SerializationInfo info, StreamingContext context)
         {
-            get => _name;
-            set => _name = value;
+            Name       = (string)      info.GetValue("Name"    , typeof(string))      ;
+            _albums    = (List<Album>) info.GetValue("Albums"  , typeof(List<Album>)) ;
+            _nickNames = (List<string>)info.GetValue("NickName", typeof(List<string>));
+
+            AllArtists.Add(this);
         }
 
-        public IList<string> NickNames
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            get => _nickNames;
-        }
-        public IList<Album> Albums
-        {
-            get => _albums;
+            info.AddValue("Name"     , Name     , typeof(string)      );
+            info.AddValue("Albums"   , Albums   , typeof(List<Album>) );
+            info.AddValue("NickNames", NickNames, typeof(List<string>));
         }
 
+        #endregion
 
-        public IList<Music> Musics
-        {
-            get => _musics;
-        }
+        public string Name { get; set; }
+
+        public IList<string> NickNames => _nickNames;
+        
+        public IList<Album> Albums => _albums;
+
+        public IList<Music> Musics => _musics;
     }
 }

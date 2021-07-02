@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using ManagedBass;
 using SharpMusic.Backend.Disk;
 using SharpMusic.Backend.Information;
 using SharpMusic.Backend.Play;
-using SharpMusic.Backend.Play.BassManaged;
 
 namespace SharpMusic.Backend
 {

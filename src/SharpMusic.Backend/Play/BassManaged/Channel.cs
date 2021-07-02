@@ -33,13 +33,7 @@ namespace SharpMusic.Backend.Play.BassManaged
         {
             if (!Bass.ChannelPlay(_sound.Handle))
             {
-                switch (Bass.LastError)
-                {
-                    default:
-                        break;
-                }
-
-                return;
+                throw new BassException();
             }
             Bass.ChannelPlay(_sound.Handle);
         }
@@ -48,10 +42,7 @@ namespace SharpMusic.Backend.Play.BassManaged
         {
             if (!Bass.ChannelStop(_sound.Handle))
             {
-                switch (Bass.LastError)
-                {
-
-                }
+                throw new BassException();
             }
         }
 
@@ -59,10 +50,7 @@ namespace SharpMusic.Backend.Play.BassManaged
         {
             if (!Bass.ChannelPause(_sound.Handle))
             {
-                switch (Bass.LastError)
-                {
-
-                }
+                throw new BassException();
             }
         }
 
@@ -132,12 +120,7 @@ namespace SharpMusic.Backend.Play.BassManaged
                     _device = value;
                 }
                 else
-                {
-                    switch (Bass.LastError)
-                    {
-                        
-                    }
-                }
+                    throw new BassException();
             }
         }
             
