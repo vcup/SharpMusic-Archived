@@ -11,7 +11,7 @@ namespace SharpMusic.Backend.Information
     {
         private List<string> _alias = new();
         private List<Artist> _artists = new();
-        private static readonly HashSet<Music> AllMusics = new();
+        public static readonly HashSet<Music> AllMusics = new();
 
         public Music()
         {
@@ -31,10 +31,8 @@ namespace SharpMusic.Backend.Information
 
         public TimeSpan PlayTime { get; set; }
         
-        public uint TrackId { get; set; }
+        public uint TrackNo { get; set; }
 
         #endregion
-        
-        public static IEnumerable<Music> GetAllMusics() => AllMusics;
     }
 }

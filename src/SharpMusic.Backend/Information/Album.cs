@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace SharpMusic.Backend.Information
 {
     public class Album : InformationBase
     {
         private string _name;
-        private HashSet<string> _aliasNames;
-        private HashSet<Music> _tracks;
-        private HashSet<Artist> _artists;
-        private static readonly HashSet<Album> AllAlbums = new();
+        private List<string> _aliasNames;
+        private List<Music> _tracks;
+        private List<Artist> _artists;
+        public static readonly HashSet<Album> AllAlbums = new();
 
         public Album()
         {
@@ -25,39 +26,17 @@ namespace SharpMusic.Backend.Information
             set => _name = value;
         }
 
-        public IEnumerable<string> AliasName
+        public IList<string> AliasName
         {
             get => _aliasNames;
-            set => _aliasNames = value.ToHashSet();
         }
 
         [JsonIgnore]
-        public IEnumerable<Music> Tracks
-        {
-            get => _tracks;
-            set => _tracks = value.ToHashSet();
-        }
+        public IList<Music> Tracks => _tracks;
 
-        public IEnumerable<int> TracksHashCodes
-        {
-            get => Tracks.Select(x => x.GetHashCode());
-        }
+        public IList<Artist> Artists => _artists;
 
-        [JsonIgnore]
-        public IEnumerable<Artist> Artists
-        {
-            get => _artists;
-        }
-
-        public IEnumerable<int> ArtistHashCodes
-        {
-            get => Artists.Select(x => x.GetHashCode());
-        }
-
-        public int Lenght
-        {
-            get => Tracks.Count();
-        }
+        public int Lenght => Tracks.Count();
 
         public TimeSpan TotalTime
         {
@@ -74,7 +53,5 @@ namespace SharpMusic.Backend.Information
         }
 
         public DateTime ReleaseDate { get; set; }
-
-        public static IEnumerable<Album> GetAllAlbums() => AllAlbums;
     }
 }

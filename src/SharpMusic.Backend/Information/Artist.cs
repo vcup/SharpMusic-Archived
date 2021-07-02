@@ -9,15 +9,15 @@ namespace SharpMusic.Backend.Information
         private List<string> _nickNames;
         private List<Album> _albums;
         private List<Music> _musics;
-        private static HashSet<Artist> _allArtists = new();
+        public static readonly HashSet<Artist> AllArtists = new();
 
         public Artist()
         {
             _nickNames = new();
             _albums = new();
-            _albums = new();
+            _musics = new();
             
-            _allArtists.Add(this);
+            AllArtists.Add(this);
             foreach (var album in Albums)
             foreach (var music in album.Tracks.Where(x => x.Artists.Contains(this)))
                 _musics.Add(music);
@@ -43,7 +43,5 @@ namespace SharpMusic.Backend.Information
         {
             get => _musics;
         }
-
-        public static IEnumerable<Artist> GetAllArtists() => _allArtists;
     }
 }

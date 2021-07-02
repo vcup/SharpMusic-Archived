@@ -27,8 +27,9 @@ namespace SharpMusic.Backend.Disk
             #region SetProperty
 
             var tag = file.Tag;
-            music.Name = tag.Title + tag.Subtitle;
-            music.TrackId = tag.TrackCount;
+            music.Name = tag.Title;
+            music.Alias.Add(tag.Subtitle);
+            music.TrackNo = tag.Track;
             music.PlayTime = file.Properties.Duration;
 
             #endregion
@@ -38,18 +39,68 @@ namespace SharpMusic.Backend.Disk
             if (tag.Album != string.Empty)
             {
                 string albumName = tag.Album;
-                var albums = Album.GetAllAlbums().Where(
+                var albums = Album.AllAlbums.Where(
                     x => x.Name == albumName);
                 if (!albums.Any())
                 {
-                    albums = Album.GetAllAlbums().Where(
+                    albums = Album.AllAlbums.Where(
                         x => x.AliasName.Any(n => n == albumName));
                 }
 
                 if (!albums.Any())
-                    music.Album = new Album() {Name = albumName, Tracks = new[] {music}};
+                {
+                    music.Album = new Album() {Name = albumName};
+                    music.Album.Tracks.Add(music);
+                }
                 else
                     music.Album = albums.First();
+            }
+
+            #endregion
+
+            #region SetAlbumArtists
+            
+            if (tag.AlbumArtists.Any())
+            {
+                var artistNames = tag.AlbumArtists;
+                IEnumerable<Artist> artists = Artist.AllArtists
+                    .Where(a => artistNames.Any(n => n == a.Name));
+                if (artists.Count() != artistNames.Length)
+                {
+                    foreach (var artist in artists)
+                    {
+                        artist.Albums.Add(music.Album);
+                        music.Album.Artists.Add(artist);
+                    }
+                    
+                    artists = Artist.AllArtists
+                            .Where(a => !music.Artists.Contains(a))
+                            .Where(a => artistNames.Any(n => a.NickNames.Any(nn => nn == n)));
+                }
+
+                if (artists.Count() + music.Artists.Count() != artistNames.Length)
+                {
+                    foreach (var artist in artists)
+                    {
+                        artist.Albums.Add(music.Album);
+                        music.Album.Artists.Add(artist);
+                    }
+                    
+                    foreach (var artistName in artistNames)
+                    {
+                        var artist = new Artist() {Name = artistName};
+                        artist.Albums.Add(music.Album);
+                        music.Album.Artists.Add(artist);
+                    }
+                }
+                else
+                {
+                    foreach (var artist in artists)
+                    {
+                        music.Album.Artists.Add(artist);
+                        artist.Albums.Add(music.Album);
+                    }
+                }
             }
 
             #endregion
@@ -59,21 +110,29 @@ namespace SharpMusic.Backend.Disk
             if (tag.Performers.Any())
             {
                 var artistNames = tag.Performers;
-                IEnumerable<Artist> artists = Artist.GetAllArtists()
+                IEnumerable<Artist> artists = Artist.AllArtists
                     .Where(a => artistNames.Any(n => n == a.Name));
-                if (!artists.Any())
+                if (artists.Count() != artistNames.Length)
                 {
-                    artists = Artist.GetAllArtists()
-                        .Where(a => a.NickNames.Any(
-                                n => artistNames.Any(
-                                    an => n == an
-                                )
-                            )
-                        );
+                    foreach (var artist in artists)
+                    {
+                        artist.Musics.Add(music);
+                        music.Artists.Add(artist);
+                    }
+                    
+                    artists = Artist.AllArtists
+                            .Where(a => !music.Artists.Contains(a))
+                            .Where(a => artistNames.Any(n => a.NickNames.Any(nn => nn == n)));
                 }
 
-                if (!artists.Any())
+                if (artists.Count() + music.Artists.Count() != artistNames.Length)
                 {
+                    foreach (var artist in artists)
+                    {
+                        artist.Musics.Add(music);
+                        music.Artists.Add(artist);
+                    }
+
                     foreach (var artistName in artistNames)
                     {
                         var artist = new Artist() {Name = artistName};
@@ -84,7 +143,10 @@ namespace SharpMusic.Backend.Disk
                 else
                 {
                     foreach (var artist in artists)
+                    {
+                        artist.Musics.Add(music);
                         music.Artists.Add(artist);
+                    }
                 }
             }
 

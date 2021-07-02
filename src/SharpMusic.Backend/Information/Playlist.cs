@@ -9,12 +9,12 @@ namespace SharpMusic.Backend.Information
         private string _name;
         private string _description;
         private List<Music> _musics = new();
-        private static HashSet<Playlist> _allPlaylists = new();
+        public static readonly HashSet<Playlist> AllPlaylists = new();
 
         public Playlist()
         {
             _name = _description = String.Empty;
-            _allPlaylists.Add(this);
+            AllPlaylists.Add(this);
         }
 
         public Playlist(Playlist playlist)
@@ -22,7 +22,7 @@ namespace SharpMusic.Backend.Information
             Name = playlist.Name;
             Description = playlist.Description;
             Musics = playlist.Musics.ToList();
-            _allPlaylists.Add(this);
+            AllPlaylists.Add(this);
         }
         public string Name
         {
@@ -59,8 +59,6 @@ namespace SharpMusic.Backend.Information
                 return totalTime;
             }
         }
-
-        public static IEnumerable<Playlist> GetAllPlaylist() => _allPlaylists;
 
         public void Add(Music music) => _musics.Add(music);
         public void Add(params Music[] musics) => _musics.AddRange(musics);
