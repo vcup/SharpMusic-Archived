@@ -63,7 +63,7 @@ namespace SharpMusic.Backend.Disk
             if (tag.AlbumArtists.Any())
             {
                 var artistNames = tag.AlbumArtists;
-                IEnumerable<Artist> artists = Artist.AllArtists
+                var artists = Artist.AllArtists
                     .Where(a => artistNames.Any(n => n == a.Name));
                 if (artists.Count() != artistNames.Length)
                 {
@@ -110,7 +110,7 @@ namespace SharpMusic.Backend.Disk
             if (tag.Performers.Any())
             {
                 var artistNames = tag.Performers;
-                IEnumerable<Artist> artists = Artist.AllArtists
+                var artists = Artist.AllArtists
                     .Where(a => artistNames.Any(n => n == a.Name));
                 if (artists.Count() != artistNames.Length)
                 {
