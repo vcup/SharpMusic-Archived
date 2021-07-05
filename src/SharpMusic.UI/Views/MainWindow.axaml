@@ -1,17 +1,55 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:SharpMusic.UI.ViewModels"
+        xmlns:local="using:SharpMusic.UI.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="SharpMusic.UI.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="SharpMusic.UI">
+        Title="SharpMusic.UI"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+    
+    <Panel>
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    TintColor="Black"
+                    TintOpacity="1"
+                    BackgroundSource="Digger"
+                    MaterialOpacity="0.65"/>
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        
+        <Panel Margin="20 40 20 20">
+            <StackPanel Margin="10 40"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Width="40"
+                        Height="450">
+                <Button Command="{Binding ScanMusicCommand}">
+                    Scan
+                </Button>
+            </StackPanel>
+            <ItemsControl Items="{Binding Musics}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:MusicView Margin="40"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Panel>
+    </Panel>
 </Window>

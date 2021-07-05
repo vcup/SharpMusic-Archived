@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
@@ -13,5 +12,16 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.10.3" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\MusicView.axaml.cs">
+      <DependentUpon>MusicView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ScanMusicWindow.axaml.cs">
+      <DependentUpon>ScanMusicWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharpMusic.Backend\SharpMusic.Backend.csproj" />
   </ItemGroup>
 </Project>

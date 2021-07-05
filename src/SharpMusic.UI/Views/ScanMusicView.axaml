@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:SharpMusic.UI.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SharpMusic.UI.Views.ScanMusicView">
+    <Design.DataContext>
+        <vm:ScanMusicViewModel/>
+    </Design.DataContext>
+    <StackPanel>
+        <TextBox Text="{Binding Path}" Watermark="Type Musics Path"/>
+        <Button Command="{Binding Enter}"
+                HorizontalAlignment="Center">
+            Enter
+        </Button>
+    </StackPanel>
+</UserControl>

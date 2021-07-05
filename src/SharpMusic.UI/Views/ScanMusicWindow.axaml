@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:locel="using:SharpMusic.UI.Views"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SharpMusic.UI.Views.ScanMusicWindow"
+        Title="ScanMusicWindow"
+        Width="400"
+        Height="100"
+        ExtendClientAreaToDecorationsHint="True"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent">
+    <Panel Margin="0 35 0 0">
+        <locel:ScanMusicView/>
+    </Panel>
+</Window>
