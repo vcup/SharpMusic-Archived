@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using ManagedBass;
-using TagLib.Id3v2;
 
 namespace SharpMusic.Backend.Play.BassManaged
 {
@@ -11,8 +8,8 @@ namespace SharpMusic.Backend.Play.BassManaged
     {
         #region Static Field
 
-        private static readonly int DefaultDevice = 0;
-        private static readonly int DefaultRecord = 0;
+        private static readonly int DefaultDevice;
+        private static readonly int DefaultRecord;
         private static readonly HashSet<Device> Devices = new();
         private static readonly HashSet<Device> RecordDevices = new();
 

@@ -143,7 +143,7 @@ namespace SharpMusic.Backend.Play.BassManaged
 
         public void SetEndedEvent(Action action)
         {
-            SyncProcedure proc = new((handle, channel, data, user) => action());
+            SyncProcedure proc = new((_, _, _, _) => action());
             Bass.ChannelSetSync(_sound.Handle, SyncFlags.End, 0, proc);
         }
 

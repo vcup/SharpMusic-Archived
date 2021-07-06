@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using ManagedBass;
-using TagLib.Id3v2;
 
 namespace SharpMusic.Backend.Play.BassManaged
 {
     public class Sound
     {
-        private int _streamHandle;
-        private Uri _streamUri;
+        private readonly int _streamHandle;
+        private readonly Uri _streamUri;
         private static readonly Dictionary<string, int> _HandleTable = new();
         
         public Sound(string filePath)

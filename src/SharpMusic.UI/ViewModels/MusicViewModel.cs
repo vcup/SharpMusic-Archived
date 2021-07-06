@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using Avalonia.Media.Imaging;
 using SharpMusic.Backend.Information;
-using TagLib;
 
 namespace SharpMusic.UI.ViewModels
 {

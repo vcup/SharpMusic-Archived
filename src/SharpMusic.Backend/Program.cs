@@ -9,7 +9,7 @@ namespace SharpMusic.Backend
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             int pid = Bass.PluginLoad("./Plugin/Bass/bassflac.dll");
             string.Join(';', Bass.PluginGetInfo(pid).Formats.Select(f => f.FileExtensions))

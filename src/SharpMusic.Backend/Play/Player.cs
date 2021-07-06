@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using ManagedBass;
 using SharpMusic.Backend.Information;
 using SharpMusic.Backend.Information.PlayExtension;
@@ -82,7 +80,7 @@ namespace SharpMusic.Backend.Play
         {
             if (_playlist.Count == 0)
                 return;
-            else if (_playingIndex == _playingList.Count - 1)
+            if (_playingIndex == _playingList.Count - 1)
             {
                 if (!_musicEnumerator.MoveNext())
                     return;
