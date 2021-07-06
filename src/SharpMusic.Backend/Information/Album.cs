@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using TagLib;
 
 namespace SharpMusic.Backend.Information
 {
@@ -49,6 +49,8 @@ namespace SharpMusic.Backend.Information
         public IList<Artist> Artists => _artists;
 
         public int Lenght => Tracks.Count;
+        
+        public PictureLazy Cover { get; set; }
 
         public TimeSpan TotalTime
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Metadata;
 using ManagedBass;
 
 namespace SharpMusic.Backend.Play.BassManaged

@@ -8,10 +8,15 @@
     <Design.DataContext>
         <vm:MusicViewModel/>
     </Design.DataContext>
-    <StackPanel>
-        <TextBlock Text="{Binding Title}"
-                   TextAlignment="Center"/>
-        <TextBlock Text="{Binding Artist}"
-                   TextAlignment="Center"/>
+    <StackPanel Spacing="5" Width="200">
+        <Border CornerRadius="10" ClipToBounds="True">
+            <Panel>
+                <Image Height="200" Width="200"
+                       Source="{Binding Cover}"
+                       Margin="0 0 0 5"/>
+            </Panel>
+        </Border>
+        <TextBlock Text="{Binding Title}" TextAlignment="Center" Margin="2"/>
+        <TextBlock Text="{Binding Artist}" TextAlignment="Center" Margin="2"/>
     </StackPanel>
 </UserControl>

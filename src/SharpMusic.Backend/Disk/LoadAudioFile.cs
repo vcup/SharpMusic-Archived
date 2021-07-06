@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using ManagedBass;
 using SharpMusic.Backend.Information;
 
@@ -23,10 +24,10 @@ namespace SharpMusic.Backend.Disk
         {
             Music music = new() {StreamUri = new Uri(Path.GetFullPath(filePath))};
             using var file = TagLib.File.Create(filePath);
+            var tag = file.Tag;
 
             #region SetProperty
 
-            var tag = file.Tag;
             music.Name = tag.Title;
             music.Alias.Add(tag.Subtitle);
             music.TrackNo = tag.Track;
@@ -54,6 +55,9 @@ namespace SharpMusic.Backend.Disk
                 }
                 else
                     music.Album = albums.First();
+
+                if (tag.Pictures.Length > 0)
+                    music.Album.Cover = new(tag.Pictures[0]);
             }
 
             #endregion
