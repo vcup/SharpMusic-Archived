@@ -11,8 +11,8 @@
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaTitleBarHeightHint="535"
-        Width="1070" Height="535">
+        ExtendClientAreaTitleBarHeightHint="599"
+        Width="940" Height="595">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
@@ -29,17 +29,15 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         
-        <Panel Margin="25 30 20 20">
-            <StackPanel Margin="10 40"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Width="30"
-                        Height="450">
+        <DockPanel Margin="20 30 20 15">
+            <StackPanel Margin="5 40 10 40"
+                        Width="30" Height="450"
+                        DockPanel.Dock="Right">
                 <Button Command="{Binding ScanMusicCommand}">
                     Scan
                 </Button>
             </StackPanel>
-            <Border Margin="10 20 70 20">
+            <Border Margin="10 20">
                 <Panel>
                     <ListBox Items="{Binding Musics}"
                              Background="Transparent">
@@ -57,6 +55,6 @@
                     </ListBox>
                 </Panel>
             </Border>
-        </Panel>
+        </DockPanel>
     </Panel>
 </Window>

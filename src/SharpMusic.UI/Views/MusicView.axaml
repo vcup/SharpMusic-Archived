@@ -8,10 +8,10 @@
     <Design.DataContext>
         <vm:MusicViewModel/>
     </Design.DataContext>
-    <StackPanel Spacing="5" Width="200">
+    <StackPanel Spacing="5" Width="175">
         <Border CornerRadius="10" ClipToBounds="True">
             <Panel>
-                <Image Height="200" Width="200"
+                <Image Height="175" Width="175"
                        Source="{Binding Cover}"
                        Margin="0 0 0 5"/>
             </Panel>
