@@ -20,6 +20,9 @@
     <Compile Update="Views\ScanMusicWindow.axaml.cs">
       <DependentUpon>ScanMusicWindow.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\MusicsView.axaml.cs">
+      <DependentUpon>MusicsView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpMusic.Backend\SharpMusic.Backend.csproj" />

@@ -1,29 +1,34 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Reactive.Linq;
-using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using Avalonia.Controls;
 using DynamicData;
 using ReactiveUI;
 
 namespace SharpMusic.UI.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase, IControlsViewModel, IViewModelConform<ViewModelBase>
     {
         public MainWindowViewModel()
         {
-            Musics = new();
-            ShowScanMusic = new();
-            ScanMusicCommand = ReactiveCommand.CreateFromTask(async () =>
-                {
-                    var vvm = new ScanMusicViewModel();
-                    var result = await ShowScanMusic.Handle(vvm);
-                    if (result != null) Musics.AddRange(result);
-                }
-            );
+            Items.CollectionChanged += (sender, _) =>
+            {
+                var newItem = (IControlsViewModel)((ObservableCollection<ViewModelBase>) sender!).Last();
+                Controls.AddRange(newItem.Controls);
+                newItem.Controls.CollectionChanged += ((controls, _) =>
+                    Controls.Add(((ObservableCollection<Control>)controls!).Last()));
+            };
+            _secondaryViewModel = new MusicsViewModel();
+            Items.Add(_secondaryViewModel);
         }
 
-        public ObservableCollection<MusicViewModel> Musics { get; set; }
-        public ICommand ScanMusicCommand { get; set; }
-        public Interaction<ScanMusicViewModel, IEnumerable<MusicViewModel>?> ShowScanMusic { get; }
+        private ViewModelBase _secondaryViewModel;
+        public ViewModelBase SecondaryViewModel
+        {
+            get => _secondaryViewModel;
+            set => this.RaiseAndSetIfChanged(ref _secondaryViewModel, value);
+        }
+
+        public ObservableCollection<Control> Controls { get; set; } = new();
+        public ObservableCollection<ViewModelBase> Items { get; set; } = new();
     }
 }

@@ -16,7 +16,7 @@ namespace SharpMusic.UI.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
-            this.WhenActivated(b => b(ViewModel!.ShowScanMusic.RegisterHandler(DoShowScanMusicWindow)));
+            this.WhenActivated(b => b(((MusicsViewModel)ViewModel!.SecondaryViewModel).ShowScanMusic.RegisterHandler(DoShowScanMusicWindow)));
         }
 
         private void InitializeComponent()
