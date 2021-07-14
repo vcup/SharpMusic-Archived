@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SharpMusic.UI.ViewModels"
+             xmlns:local="using:SharpMusic.UI.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SharpMusic.UI.Views.AlbumsView">
+    <Design.DataContext>
+        <vm:AlbumsViewModel/>
+    </Design.DataContext>
+    <Panel>
+        <ListBox Items="{Binding Items}"
+                 Background="Transparent">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:AlbumsView/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ContentControl IsVisible="False" Name="Controls">
+        <!--在后端代码中将控件添加到ViewModel.Controls以将其显示到主视图-->
+            <ItemsControl>
+            </ItemsControl>
+        </ContentControl>
+    </Panel>
+</UserControl>

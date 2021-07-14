@@ -13,7 +13,7 @@ namespace SharpMusic.UI.ViewModels
         public ObservableCollection<Control> Controls { get; set; }
     }
 
-    public interface IViewModelConform<TViewModel> where TViewModel : ViewModelBase
+    public interface IViewModelConform<TViewModel>
     {
         public ObservableCollection<TViewModel> Items { get; set; }
     }

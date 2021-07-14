@@ -33,6 +33,7 @@
             <StackPanel Margin="5 40 10 40"
                         Width="30" Height="450"
                         DockPanel.Dock="Right">
+                <ItemsControl Items="{Binding ViewModelsSwitchButtons}"/>
                 <ItemsControl Items="{Binding Controls}"/>
             </StackPanel>
             <Border Margin="10 20">

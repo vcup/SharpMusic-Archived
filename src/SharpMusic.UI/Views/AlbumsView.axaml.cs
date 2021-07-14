@@ -1,4 +1,5 @@
 using System.Reactive.Disposables;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -7,9 +8,9 @@ using SharpMusic.UI.ViewModels;
 
 namespace SharpMusic.UI.Views
 {
-    public partial class MusicsView : ReactiveUserControl<MusicsViewModel>
+    public partial class AlbumsView : ReactiveUserControl<AlbumsViewModel>
     {
-        public MusicsView()
+        public AlbumsView()
         {
             InitializeComponent();
             this.WhenActivated(b =>
