@@ -13,7 +13,7 @@ namespace SharpMusic.UI.Views
         public AlbumsView()
         {
             InitializeComponent();
-            this.WhenActivated(b =>
+            this.WhenActivated(_ =>
                 {
                     var controls = ((ItemsControl) this.Get<ContentControl>("Controls").Content);
                     ViewModel!.Controls.Add(controls);

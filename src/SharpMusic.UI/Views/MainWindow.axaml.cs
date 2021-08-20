@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Markup.Xaml;
@@ -16,7 +17,12 @@ namespace SharpMusic.UI.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
-            this.WhenActivated(b => b(((MusicsViewModel)ViewModel!.SecondaryViewModel).ShowScanMusic.RegisterHandler(DoShowScanMusicWindow)));
+            this.WhenActivated(b => b((
+                        (MusicsViewModel)ViewModel!.Items
+                        .First(model => model.GetType() == typeof(MusicsViewModel)))
+                    .ShowScanMusic.RegisterHandler(DoShowScanMusicWindow)
+                )
+            );
         }
 
         private void InitializeComponent()

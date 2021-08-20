@@ -1,4 +1,3 @@
-using System.Reactive.Disposables;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -12,7 +11,7 @@ namespace SharpMusic.UI.Views
         public MusicsView()
         {
             InitializeComponent();
-            this.WhenActivated(b =>
+            this.WhenActivated(_ =>
                 {
                     var controls = ((ItemsControl) this.Get<ContentControl>("Controls").Content);
                     ViewModel!.Controls.Add(controls);

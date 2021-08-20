@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -6,7 +7,7 @@ using SharpMusic.Backend.Information;
 
 namespace SharpMusic.UI.ViewModels
 {
-    public class AlbumViewModel : ViewModelBase
+    public class AlbumViewModel : ViewModelBase,  ITertiaryViewModel
     {
         private Album _album;
         
@@ -18,5 +19,7 @@ namespace SharpMusic.UI.ViewModels
         public Bitmap Cover => new Bitmap(new MemoryStream(_album.Cover.Data.Data));
         public string Title => _album.Name;
         public string Artists => string.Join("\\", _album.Artists.Select(a => a.Name));
+        public ObservableCollection<Control> Controls { get; set; } = new();
+        public ObservableCollection<IFourthViewModel> Items { get; set; } = new();
     }
 }

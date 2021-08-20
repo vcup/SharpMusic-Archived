@@ -29,5 +29,12 @@
             <ItemsControl>
             </ItemsControl>
         </ContentControl>
+        <ContentControl IsVisible="False" Name="SwitchButton">
+            <Button Command="{Binding SwitchToThisViewCommand}"
+                    Width="30" Height="30">
+                <Svg Path="/Assets/MusicsViewIcon.svg" Width="30" Height="30"
+                     VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Button>
+        </ContentControl>
     </Panel>
 </UserControl>

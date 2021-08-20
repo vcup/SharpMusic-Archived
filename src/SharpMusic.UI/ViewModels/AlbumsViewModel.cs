@@ -7,13 +7,16 @@ using ReactiveUI;
 
 namespace SharpMusic.UI.ViewModels
 {
-    public class AlbumsViewModel : ViewModelBase, IControlsViewModel, IViewModelConform<AlbumViewModel>
+    public class AlbumsViewModel : ViewModelBase, ISecondaryViewModel
     {
         public AlbumsViewModel()
         {
+            SwitchToThisViewModel = ReactiveCommand.Create(() => { });
         }
 
         public ObservableCollection<Control> Controls { get; set; } = new();
-        public ObservableCollection<AlbumViewModel> Items { get; set; } = new();
+        public ObservableCollection<ITertiaryViewModel> Items { get; set; } = new();
+        public string SvgIconPath { get; set; } = "/Assets/AlbumsViewIcon.svg";
+        public ICommand SwitchToThisViewModel { get; set; }
     }
 }

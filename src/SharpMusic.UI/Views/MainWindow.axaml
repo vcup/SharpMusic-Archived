@@ -14,31 +14,41 @@
         ExtendClientAreaTitleBarHeightHint="599"
         Width="940" Height="595">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-    
-    <Panel>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
                     TintColor="Black"
                     TintOpacity="1"
                     BackgroundSource="Digger"
                     MaterialOpacity="0.65"/>
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
-        
-        <DockPanel Margin="20 30 20 15">
-            <StackPanel Margin="5 40 10 40"
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+
+		<DockPanel Margin="20 30 20 15">
+			<StackPanel Margin="5 40 10 40"
                         Width="30" Height="450"
                         DockPanel.Dock="Right">
-                <ItemsControl Items="{Binding ViewModelsSwitchButtons}"/>
-                <ItemsControl Items="{Binding Controls}"/>
-            </StackPanel>
-            <Border Margin="10 20">
-                <ContentControl Content="{Binding SecondaryViewModel}"/>
-            </Border>
-        </DockPanel>
-    </Panel>
+				<ItemsControl Items="{Binding Items}" Margin="0 0 0 5">
+					<ItemsControl.DataTemplates>
+						<DataTemplate>
+							<Button Command="{Binding SwitchToThisViewModel}"
+							        Width="30" Height="30" Background="Transparent">
+								<Svg Path="{Binding SvgIconPath}"
+								     Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+							</Button>
+						</DataTemplate>
+					</ItemsControl.DataTemplates>
+				</ItemsControl>
+				<ItemsControl Items="{Binding Controls}"/>
+			</StackPanel>
+			<Border Margin="10 20">
+				<ContentControl Content="{Binding SecondaryViewModel}"/>
+			</Border>
+		</DockPanel>
+	</Panel>
 </Window>

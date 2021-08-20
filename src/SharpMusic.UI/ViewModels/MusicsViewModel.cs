@@ -9,7 +9,7 @@ using ReactiveUI;
 
 namespace SharpMusic.UI.ViewModels
 {
-    public class MusicsViewModel : ViewModelBase, IControlsViewModel, IViewModelConform<MusicViewModel>
+    public class MusicsViewModel : ViewModelBase, ISecondaryViewModel
     {
         public MusicsViewModel()
         {
@@ -20,11 +20,14 @@ namespace SharpMusic.UI.ViewModels
                     if (result != null) Items.AddRange(result);
                 }
             );
+            SwitchToThisViewModel = ReactiveCommand.Create(() => Console.WriteLine(";w;"));
         }
 
         public ICommand ScanMusicCommand { get; set; }
         public Interaction<ScanMusicViewModel, IEnumerable<MusicViewModel>?> ShowScanMusic { get; } = new();
         public ObservableCollection<Control> Controls { get; set; } = new();
-        public ObservableCollection<MusicViewModel> Items { get; set; } = new();
+        public ObservableCollection<ITertiaryViewModel> Items { get; set; } = new();
+        public string SvgIconPath { get; set; } = "/Assets/MusicsViewIcon.svg";
+        public ICommand SwitchToThisViewModel { get; set; }
     }
 }

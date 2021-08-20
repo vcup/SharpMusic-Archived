@@ -27,8 +27,8 @@
         <ContentControl IsVisible="False" Name="Controls">
         <!--在后端代码中将控件添加到ViewModel.Controls以将其显示到主视图-->
             <ItemsControl>
-                <Button Command="{Binding ScanMusicCommand}">
-                    Scan
+                <Button Command="{Binding ScanMusicCommand}" Height="30" Width="30">
+                    <Svg Path="/Assets/ScanMusicButtonIcon.svg" Height="25" Width="25" Margin="5"/>
                 </Button>
             </ItemsControl>
         </ContentControl>
