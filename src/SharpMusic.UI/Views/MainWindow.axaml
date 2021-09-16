@@ -10,6 +10,7 @@
         Title="SharpMusic.UI"
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
+        ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="599"
         Width="940" Height="595">
@@ -28,11 +29,30 @@
                     MaterialOpacity="0.65"/>
 			</ExperimentalAcrylicBorder.Material>
 		</ExperimentalAcrylicBorder>
-
-		<DockPanel Margin="20 30 20 15">
+		<StackPanel>
+	    	<WrapPanel Name="PlayControl">
+	    		<WrapPanel.Styles>
+	    			<Style Selector="Button.PlayControl">
+	    				<Setter Property="Width" Value="35"/>
+	    				<Setter Property="Height" Value="35"/>
+	    			</Style>
+	    		</WrapPanel.Styles>
+		        <Button Classes="PlayControl" Command="{Binding ShowPlaylist}"/>
+	    		<Button Classes="PlayControl" Command="{Binding PlayPrev}"/>
+	    		<Button Classes="PlayControl" Command="{Binding PlayOrPause}"/>
+	    		<Button Classes="PlayControl" Command="{Binding PlayNext}"/>
+		        <Button Classes="PlayControl" Command="{Binding W}"/>
+		        <TextBlock Text="{Binding PlayingMusicInfo}"
+		                   VerticalAlignment="Center" HorizontalAlignment="Left"
+		                   Margin="5 0" IsHitTestVisible="False"/>
+	    	</WrapPanel>
+			<ProgressBar Value="{Binding Position}" Maximum="{Binding PlayTime}"/>
+		</StackPanel>
+		
+		<DockPanel Margin="20 45 20 15">
 			<StackPanel Margin="5 40 10 40"
-                        Width="30" Height="450"
-                        DockPanel.Dock="Right">
+                       Width="30" Height="450"
+                       DockPanel.Dock="Right">
 				<ItemsControl Items="{Binding Items}" Margin="0 0 0 5">
 					<ItemsControl.DataTemplates>
 						<DataTemplate>
@@ -50,5 +70,9 @@
 				<ContentControl Content="{Binding SecondaryViewModel}"/>
 			</Border>
 		</DockPanel>
+		<Border IsVisible="{Binding PlayinglistIsVisible}">
+			<local:PlayingListView DataContext="{Binding PlayingListViewModel}"
+				                   HorizontalAlignment="Left" Margin="0 40"/>
+		</Border>
 	</Panel>
 </Window>

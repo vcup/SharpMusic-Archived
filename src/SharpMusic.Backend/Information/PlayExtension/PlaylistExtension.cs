@@ -12,9 +12,9 @@ namespace SharpMusic.Backend.Information.PlayExtension
             PlayingIndex.TryAdd(playlist, 0);
             while (true)
             {
-                foreach (var music in playlist.Musics)
+                foreach (var music in playlist)
                 {
-                    PlayingIndex[playlist] = playlist.Musics.IndexOf(music);
+                    PlayingIndex[playlist] = playlist.IndexOf(music);
                     yield return music;
                 }
             }
@@ -32,13 +32,13 @@ namespace SharpMusic.Backend.Information.PlayExtension
             {
                 var musicIndex = rand();
                 PlayingIndex[playlist] = musicIndex;
-                yield return playlist.Musics[musicIndex];
+                yield return playlist[musicIndex];
             }
         }
 
         public static IEnumerable<Music> SingleLoopPlay(this Playlist playlist)
         {
-            var music = playlist.Musics[PlayingIndex[playlist]];
+            var music = playlist[PlayingIndex[playlist]];
             while (true)
             {
                 yield return music;
@@ -47,7 +47,7 @@ namespace SharpMusic.Backend.Information.PlayExtension
 
         public static Music PlayingMusic(this Playlist playlist)
         {
-            return playlist.Musics[PlayingIndex[playlist]];
+            return playlist[PlayingIndex[playlist]];
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SharpMusic.Backend.Play
         public Player(Playlist playlist)
         {
             _musicEnumerator = playlist.RankPlay().GetEnumerator();
-            _playlist = new Playlist(playlist);
+            _playlist = playlist;
             MoveNext();
         }
 
@@ -40,13 +40,27 @@ namespace SharpMusic.Backend.Play
                         PlayNext();
                 }
             );
+
+            PlayBackStartEvent?.Invoke(this, new());
         }
 
-        public void Pause() => _channel.Pause();
+        public void Pause()
+        {
+            _channel.Pause();
+            PlayBackPauseEvent?.Invoke(this, new());
+        }
 
-        public void Resume() => _channel.Resume();
+        public void Resume()
+        {
+            _channel.Resume();
+            PlayBackResumeEvent?.Invoke(this, new());
+        }
 
-        public void Stop() => _channel.Stop();
+        public void Stop()
+        {
+            _channel.Stop();
+            PlayBackStopEvent?.Invoke(this, new());
+        }
 
         public void PlayPrev()
         {
@@ -116,7 +130,27 @@ namespace SharpMusic.Backend.Play
         public PlaybackState State
         {
             get => _channel.State;
-            set => _channel.State = value;
+            set
+            {
+                if (_channel.State == value) return;
+                
+                switch (value)
+                {
+                    case PlaybackState.Playing:
+                        if (_channel.State == PlaybackState.Paused) Resume();
+                        else Play();
+                        break;
+                    case PlaybackState.Stopped:
+                        Stop();
+                        break;
+                    case PlaybackState.Paused:
+                        Pause();
+                        break;
+                    case PlaybackState.Stalled:
+                        Pause(); //　
+                        break;
+                }
+            }
         }
 
         public TimeSpan PlayTime => _channel.PlayTime;
@@ -183,8 +217,30 @@ namespace SharpMusic.Backend.Play
                 _playlist = value;
             }
         }
-        
+
+        public void AddMusicToPlaylist(Music music) => _playlist.Add(music);
+
+        public void AddManyMusicToPlaylist(IEnumerable<Music> musics) => _playlist.Add(musics);
+
         #endregion
-        
+
+        #region Event
+
+        public delegate void PlayBackEventHandler(Player sender, PlayBackEventArgs args);
+
+        public class PlayBackEventArgs : EventArgs
+        {
+            public PlayBackEventArgs()
+            {
+                
+            }
+        }
+
+        public event PlayBackEventHandler PlayBackStartEvent;
+        public event PlayBackEventHandler PlayBackStopEvent;
+        public event PlayBackEventHandler PlayBackPauseEvent;
+        public event PlayBackEventHandler PlayBackResumeEvent;
+
+        #endregion
     }
 }

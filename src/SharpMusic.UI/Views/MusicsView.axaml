@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SharpMusic.UI.ViewModels"
              xmlns:local="using:SharpMusic.UI.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="796" d:DesignHeight="500"
              x:Class="SharpMusic.UI.Views.MusicsView">
     <Design.DataContext>
         <vm:MusicsViewModel/>
     </Design.DataContext>
     <Panel>
         <ListBox Items="{Binding Items}"
-                 Background="Transparent">
+                 Background="Transparent"
+                 MinWidth="796" MinHeight="500">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>

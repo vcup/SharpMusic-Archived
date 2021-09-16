@@ -1,12 +1,16 @@
+#nullable enable
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.Serialization;
 
 namespace SharpMusic.Backend.Information
 {
     [Serializable]
-    public class Playlist : InformationBase, ISerializable
+    public class Playlist : InformationBase, IList<Music>, INotifyCollectionChanged
     {
         private List<Music> _musics = new();
         public static readonly HashSet<Playlist> AllPlaylists = new();
@@ -20,44 +24,21 @@ namespace SharpMusic.Backend.Information
         {
             Name = playlist.Name;
             Description = playlist.Description;
-            _musics = playlist.Musics.ToList();
+            _musics = playlist.ToList();
             AllPlaylists.Add(this);
         }
 
-        #region Serialization
+        public string Name { get; set; } = "";
 
-        public Playlist(SerializationInfo info, StreamingContext context)
-        {
-            Name        = (string)      info.GetValue("Name"       , typeof(string)     );
-            _musics     = (List<Music>) info.GetValue("Music"      , typeof(List<Music>));
-            Description = (string)      info.GetValue("Description", typeof(string)     );
-            
-            AllPlaylists.Add(this);
-        }
+        public string Description { get; set; } = "";
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("Name"       , Name       , typeof(string)     );
-            info.AddValue("Music"      , Musics     , typeof(List<Music>));
-            info.AddValue("Description", Description, typeof(string)     );
-        }
-
-        #endregion
-        
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public IList<Music> Musics => _musics;
-
-        public int Count => Musics.Count;
 
         public TimeSpan TotalPlaytime
         {
             get
             {
                 TimeSpan totalTime = new TimeSpan();
-                foreach (var playTime in Musics.Select(x => x.PlayTime))
+                foreach (var playTime in _musics.Select(x => x.PlayTime))
                 {
                     totalTime += playTime;
                 }
@@ -66,8 +47,81 @@ namespace SharpMusic.Backend.Information
             }
         }
 
-        public void Add(Music music) => _musics.Add(music);
-        public void Add(params Music[] musics) => _musics.AddRange(musics);
-        public void Add(IEnumerable<Music> musics) => _musics.AddRange(musics);
+        #region Implemented IList
+        
+        public int Count => _musics.Count;
+        
+        public bool IsReadOnly => false;
+        
+        public void Add(Music music)
+        {
+            _musics.Add(music);
+            CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Add, music, _musics.Count-1));
+        }
+
+        public void Add(params Music[] musics)
+        {
+            foreach (var music in musics)
+                Add(music);
+        }
+
+        public void Add(IEnumerable<Music> musics)
+        {
+            foreach (var music in musics)
+                Add(music);
+        }
+        
+        public void Clear()
+        {
+            _musics.Clear();
+            CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Reset));
+        }
+
+        public bool Contains(Music item) => _musics.Contains(item);
+
+        public void CopyTo(Music[] array, int arrayIndex) => _musics.CopyTo(array, arrayIndex);
+
+        public IEnumerator<Music> GetEnumerator() => _musics.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public int IndexOf(Music item) => _musics.IndexOf(item);
+
+        public void Insert(int index, Music item)
+        {
+            _musics.Insert(index, item);
+            CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Add, _musics, index));
+        }
+
+        public bool Remove(Music item)
+        {
+            if (_musics.Remove(item))
+            {
+                CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Remove, _musics));
+                return true;
+            }
+
+            return false;
+        }
+
+        public void RemoveAt(int index)
+        {
+            _musics.RemoveAt(index);
+            CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Remove, _musics, index));
+        }
+
+        public Music this[int index]
+        {
+            get => _musics[index];
+            set
+            {
+                _musics[index] = value;
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, _musics, index));
+            }
+        }
+
+        #endregion
+        
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
     }
 }

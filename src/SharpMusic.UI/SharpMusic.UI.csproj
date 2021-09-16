@@ -1,31 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.7" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="0.10.7" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Views\MusicView.axaml.cs">
-      <DependentUpon>MusicView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\ScanMusicWindow.axaml.cs">
-      <DependentUpon>ScanMusicWindow.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\MusicsView.axaml.cs">
-      <DependentUpon>MusicsView.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SharpMusic.Backend\SharpMusic.Backend.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="0.10.7" />
+		<PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+		<PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+		<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
+		<PackageReference Include="Avalonia.Svg.Skia" Version="0.10.7" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Views\MusicView.axaml.cs">
+			<DependentUpon>MusicView.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\ScanMusicWindow.axaml.cs">
+			<DependentUpon>ScanMusicWindow.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\MusicsView.axaml.cs">
+			<DependentUpon>MusicsView.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\PlaylistView.axaml.cs">
+			<DependentUpon>PlaylistView.axaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\PlayingListView.axaml.cs">
+		  <DependentUpon>PlayingListView.axaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SharpMusic.Backend\SharpMusic.Backend.csproj" />
+	</ItemGroup>
 </Project>

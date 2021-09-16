@@ -20,22 +20,22 @@ namespace SharpMusic.UI.ViewModels
         public ObservableCollection<TViewModel> Items { get; set; }
     }
     
-    public interface ISecondaryViewModel : IControlsViewModel, IViewModelConform<ITertiaryViewModel>
+    public interface ISecondaryViewModel : IViewModelConform<ITertiaryViewModel>
     {
         public string SvgIconPath { get; set; }
         
         public  ICommand SwitchToThisViewModel { get; set; }
     }
 
-    public interface ITertiaryViewModel : IControlsViewModel, IViewModelConform<IFourthViewModel>
+    public interface ITertiaryViewModel : IViewModelConform<IFourthViewModel>
     {
     }
 
-    public interface IFourthViewModel : IControlsViewModel, IViewModelConform<IFifthViewModel>
+    public interface IFourthViewModel : IViewModelConform<IFifthViewModel>
     {
     }
 
-    public interface IFifthViewModel : IControlsViewModel, IViewModelConform<object>
+    public interface IFifthViewModel : IViewModelConform<object>
     {
     }
 }

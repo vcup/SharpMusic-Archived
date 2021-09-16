@@ -9,7 +9,7 @@ using ReactiveUI;
 
 namespace SharpMusic.UI.ViewModels
 {
-    public class MusicsViewModel : ViewModelBase, ISecondaryViewModel
+    public class MusicsViewModel : ViewModelBase, ISecondaryViewModel, IControlsViewModel
     {
         public MusicsViewModel()
         {

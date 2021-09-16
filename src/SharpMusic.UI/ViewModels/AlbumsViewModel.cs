@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace SharpMusic.UI.ViewModels
 {
-    public class AlbumsViewModel : ViewModelBase, ISecondaryViewModel
+    public class AlbumsViewModel : ViewModelBase, ISecondaryViewModel, IControlsViewModel
     {
         public AlbumsViewModel()
         {
