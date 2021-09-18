@@ -46,6 +46,7 @@ namespace SharpMusic.UI.ViewModels
                     {
                         Thread.Sleep(100);
                         this.RaisePropertyChanged(nameof(Position));
+                        this.RaisePropertyChanged(nameof(PosAndTime));
                     }
                 }
             );
@@ -88,7 +89,7 @@ namespace SharpMusic.UI.ViewModels
         public ICommand PlayPrev => ReactiveCommand.Create(_player.PlayPrev);
         public ICommand StopPlay => ReactiveCommand.Create(_player.Stop);
 
-        public bool PlayinglistIsVisible { get; set; } = true;
+        public bool PlayinglistIsVisible { get; set; }
         public PlaylistViewModel PlayingListViewModel { get; set; }
         public ICommand ShowPlaylist => ReactiveCommand.Create(() =>
             {
@@ -125,6 +126,9 @@ namespace SharpMusic.UI.ViewModels
         }
 
         public Double PlayTime => _player.PlayTime.TotalSeconds;
+
+        public string PosAndTime =>
+            $"{_player.Position.Minutes:00}:{_player.Position.Seconds:00}/{_player.PlayTime.Minutes:00}:{_player.PlayTime.Seconds:00} ";
 
         #endregion
 

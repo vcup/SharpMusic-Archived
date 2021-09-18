@@ -36,15 +36,23 @@
 	    				<Setter Property="Width" Value="35"/>
 	    				<Setter Property="Height" Value="35"/>
 	    			</Style>
-	    		</WrapPanel.Styles>
+		            <Style Selector="TextBlock.TitleBarText">
+			            <Setter Property="VerticalAlignment" Value="Center"/>
+			            <Setter Property="HorizontalAlignment" Value="Left"/>
+			            <Setter Property="IsHitTestVisible" Value="False"/>
+		            </Style>
+	            </WrapPanel.Styles>
 		        <Button Classes="PlayControl" Command="{Binding ShowPlaylist}"/>
 	    		<Button Classes="PlayControl" Command="{Binding PlayPrev}"/>
 	    		<Button Classes="PlayControl" Command="{Binding PlayOrPause}"/>
 	    		<Button Classes="PlayControl" Command="{Binding PlayNext}"/>
 		        <Button Classes="PlayControl" Command="{Binding W}"/>
+		        
+		        <TextBlock Text="{Binding PosAndTime}"
+		                   Classes="TitleBarText" Margin="10 0 5 0"
+		                   Width="85"/>
 		        <TextBlock Text="{Binding PlayingMusicInfo}"
-		                   VerticalAlignment="Center" HorizontalAlignment="Left"
-		                   Margin="5 0" IsHitTestVisible="False"/>
+		                   Classes="TitleBarText" Margin="5 0"/>
 	    	</WrapPanel>
 			<ProgressBar Value="{Binding Position}" Maximum="{Binding PlayTime}"/>
 		</StackPanel>

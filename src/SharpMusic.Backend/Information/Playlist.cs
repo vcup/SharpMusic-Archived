@@ -90,7 +90,13 @@ namespace SharpMusic.Backend.Information
         public void Insert(int index, Music item)
         {
             _musics.Insert(index, item);
-            CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Add, _musics, index));
+            CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Add, item, index));
+        }
+
+        public void InsertRange(int index, IEnumerable<Music> collection)
+        {
+            _musics.InsertRange(index, collection);
+            CollectionChanged?.Invoke(this, new(NotifyCollectionChangedAction.Add, collection, index));
         }
 
         public bool Remove(Music item)

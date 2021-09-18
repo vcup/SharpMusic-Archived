@@ -10,7 +10,7 @@ namespace SharpMusic.Backend.Play
     public class Player
     {
         private Channel _channel = new();
-        private readonly List<Music> _playingList = new();
+        private readonly Playlist _playingList;
         private int _playingIndex = -1;
         private IEnumerator<Music> _musicEnumerator;
         private Playlist _playlist;
@@ -19,6 +19,7 @@ namespace SharpMusic.Backend.Play
         {
             _musicEnumerator = playlist.RankPlay().GetEnumerator();
             _playlist = playlist;
+            _playingList = new();
             MoveNext();
         }
 
