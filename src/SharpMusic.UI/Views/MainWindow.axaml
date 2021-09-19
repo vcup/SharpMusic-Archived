@@ -46,7 +46,6 @@
 	    		<Button Classes="PlayControl" Command="{Binding PlayPrev}"/>
 	    		<Button Classes="PlayControl" Command="{Binding PlayOrPause}"/>
 	    		<Button Classes="PlayControl" Command="{Binding PlayNext}"/>
-		        <Button Classes="PlayControl" Command="{Binding W}"/>
 		        
 		        <TextBlock Text="{Binding PosAndTime}"
 		                   Classes="TitleBarText" Margin="10 0 5 0"

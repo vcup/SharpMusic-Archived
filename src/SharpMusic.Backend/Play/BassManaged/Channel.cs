@@ -15,13 +15,13 @@ namespace SharpMusic.Backend.Play.BassManaged
         
         public Channel(Sound sound)
         {
-            Sound = sound;
+            _sound = sound;
             Bass.ChannelSetDevice(_sound.Handle, _device.Handle);
         }
 
         public Channel(Sound sound, Device device)
         {
-            Sound = sound;
+            _sound = sound;
             Device = device;
             Bass.ChannelSetDevice(sound.Handle, device.Handle);
         }
@@ -91,22 +91,36 @@ namespace SharpMusic.Backend.Play.BassManaged
 
         public double Volume
         {
-            get => Bass.ChannelGetAttribute(_sound.Handle, ChannelAttribute.Volume);
+            get
+            {
+                if (_sound != null)
+                    return Bass.ChannelGetAttribute(_sound.Handle, ChannelAttribute.Volume);
+                return -1;
+            }
             set => Bass.ChannelSetAttribute(_sound.Handle, ChannelAttribute.Volume, value);
         }
 
         public TimeSpan Position
         {
-            get => TimeSpan.FromSeconds(
-                Bass.ChannelBytes2Seconds(_sound.Handle, Bass.ChannelGetPosition(_sound.Handle)));
+            get
+            {
+                if (_sound != null)
+                    return TimeSpan.FromSeconds(
+                        Bass.ChannelBytes2Seconds(_sound.Handle, Bass.ChannelGetPosition(_sound.Handle)));
+                return TimeSpan.Zero;
+            }
             set => Bass.ChannelSetPosition(_sound.Handle, Bass.ChannelSeconds2Bytes(_sound.Handle, value.TotalSeconds));
         }
 
         public TimeSpan PlayTime
         {
-            get => TimeSpan.FromSeconds(
-                Bass.ChannelBytes2Seconds(_sound.Handle, Bass.ChannelGetLength(_sound.Handle)));
-            set => throw new NotImplementedException("This Property is Non-ImplementedException");
+            get
+            {
+                if (_sound != null)
+                    return TimeSpan.FromSeconds(
+                        Bass.ChannelBytes2Seconds(_sound.Handle, Bass.ChannelGetLength(_sound.Handle)));
+                return TimeSpan.Zero;
+            }
         }
 
         public Device Device

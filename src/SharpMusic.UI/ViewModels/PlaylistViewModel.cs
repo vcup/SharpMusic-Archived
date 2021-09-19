@@ -12,9 +12,11 @@ namespace SharpMusic.UI.ViewModels
 {
     public sealed class PlaylistViewModel : ViewModelBase, ITertiaryViewModel
     {
-        public PlaylistViewModel() => Musics = new(new() { Name = $"Playlist.{GetHashCode()}" });
+        private Playlist _playlist;
+        
+        public PlaylistViewModel() => Musics = new(_playlist = new() { Name = $"Playlist.{GetHashCode()}" });
 
-        public PlaylistViewModel(Playlist playlist) => Musics = new(playlist);
+        public PlaylistViewModel(Playlist playlist) => Musics = new(_playlist = playlist);
 
         public MusicViewModels Musics { get; }
         
@@ -37,6 +39,26 @@ namespace SharpMusic.UI.ViewModels
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
+        
+        #region Collection Operate
+
+        public void AddMusic(Music item) => _playlist.Add(item);
+
+        public void AddMusic(MusicViewModel item) => _playlist.Add(item.Music);
+
+        public void AddMusics(IEnumerable<Music> items) => _playlist.Add(items);
+
+        public void AddMusics(IEnumerable<MusicViewModel> items) => _playlist.Add(items.Select(m => m.Music));
+
+        public void RemoveMusic(Music item) => _playlist.Remove(item);
+
+        public void RemoveMusic(MusicViewModel item) => _playlist.Remove(item.Music);
+
+        public void InsertMusic(int index, Music item) => _playlist.Insert(index, item);
+
+        public void InsertMusic(int index, MusicViewModel item) => _playlist.Insert(index, item.Music);
+
+        #endregion
 
         public ObservableCollection<IFourthViewModel> Items { get; set; } = new();
     }

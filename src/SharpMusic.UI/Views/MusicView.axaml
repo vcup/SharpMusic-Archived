@@ -5,18 +5,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SharpMusic.UI.Views.MusicView">
-    <Design.DataContext>
-        <vm:MusicViewModel/>
-    </Design.DataContext>
-    <StackPanel Spacing="5" Width="175">
-        <Border CornerRadius="10" ClipToBounds="True">
-            <Panel>
-                <Image Height="175" Width="175"
-                       Source="{Binding Cover}"
+	<Design.DataContext>
+		<vm:MusicViewModel/>
+	</Design.DataContext>
+	<StackPanel Spacing="5" Width="175">
+		<Border CornerRadius="10" ClipToBounds="True">
+			<Canvas Height="175" Width="175">
+				<Image Height="175" Width="175" Name="Cover"
+                       Source="{Binding Cover}" PointerEnter="OnPointerEnter" PointerLeave="OnPointerLeave"
                        Margin="0 0 0 5"/>
-            </Panel>
-        </Border>
-        <TextBlock Text="{Binding Title}" TextAlignment="Center" Margin="2"/>
-        <TextBlock Text="{Binding Artist}" TextAlignment="Center" Margin="2"/>
-    </StackPanel>
+				<Border Canvas.Right="6" Canvas.Bottom="6" CornerRadius="360" ClipToBounds="True"
+				        IsVisible="False" Name="AddButton" PointerEnter="OnPointerEnterButton" PointerLeave="OnPointerLeaveButton">
+					<Button Command="{Binding AddToPlaylist}"
+                            Width="25" Height="25" Background="Black" Opacity="0.5">
+						<TextBlock Text="+" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12.5"/>
+					</Button>
+				</Border>
+			</Canvas>
+		</Border>
+		<TextBlock Text="{Binding Title}" TextAlignment="Center" Margin="2"/>
+		<TextBlock Text="{Binding Artist}" TextAlignment="Center" Margin="2"/>
+	</StackPanel>
 </UserControl>

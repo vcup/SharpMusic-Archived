@@ -11,7 +11,7 @@
     <StackPanel>
         <TextBox Text="{Binding Path}" Watermark="Type Musics Path"/>
         <Button Command="{Binding Enter}"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Center" IsDefault="True">
             Enter
         </Button>
     </StackPanel>

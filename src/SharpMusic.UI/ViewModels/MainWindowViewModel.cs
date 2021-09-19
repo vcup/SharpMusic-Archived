@@ -28,6 +28,15 @@ namespace SharpMusic.UI.ViewModels
                     Controls.Add(((ObservableCollection<Control>) controls!).Last());   
                 });
                 newItem.SwitchToThisViewModel = ReactiveCommand.Create(() => SecondaryViewModel = newItem);
+                if (newItem.GetType() == typeof(MusicsViewModel))
+                {
+                    ((MusicsViewModel)newItem).Items.CollectionChanged += (_, args) =>
+                    {
+                        if (args.NewItems![0]!.GetType() != typeof(MusicViewModel)) return;
+                        var mvm = (MusicViewModel) args.NewItems[0]!;
+                        mvm.AddToPlaylist = ReactiveCommand.Create(() => _player!.AddMusicToPlaylist(mvm.Music));
+                    };
+                }
             };
             SecondaryViewModel = new MusicsViewModel();
             Items.Add(new AlbumsViewModel());
@@ -45,8 +54,11 @@ namespace SharpMusic.UI.ViewModels
                     while (true)
                     {
                         Thread.Sleep(100);
-                        this.RaisePropertyChanged(nameof(Position));
-                        this.RaisePropertyChanged(nameof(PosAndTime));
+                        if (_player.State != PlaybackState.Stopped)
+                        {
+                            this.RaisePropertyChanged(nameof(Position));
+                            this.RaisePropertyChanged(nameof(PosAndTime));
+                        }
                     }
                 }
             );
@@ -76,8 +88,9 @@ namespace SharpMusic.UI.ViewModels
         #region PlayerModel
         
         private readonly Player _player;
-        public Playlist PlayingList => _player.Playlist;
+        
         public ICommand PlayNext => ReactiveCommand.Create(_player.PlayNext);
+        
         public ICommand PlayOrPause => ReactiveCommand.Create(() =>
             {
                 if (_player.State == PlaybackState.Stopped) _player.Play();
@@ -86,22 +99,21 @@ namespace SharpMusic.UI.ViewModels
                 else _player.Play();
             }
         );
+        
         public ICommand PlayPrev => ReactiveCommand.Create(_player.PlayPrev);
+        
         public ICommand StopPlay => ReactiveCommand.Create(_player.Stop);
 
         public bool PlayinglistIsVisible { get; set; }
+        
         public PlaylistViewModel PlayingListViewModel { get; set; }
+        
         public ICommand ShowPlaylist => ReactiveCommand.Create(() =>
             {
                 PlayinglistIsVisible = !PlayinglistIsVisible;
                 this.RaisePropertyChanged(nameof(PlayinglistIsVisible));
             }
         );
-
-        public ICommand W => ReactiveCommand.Create(() =>
-        {
-            _player.AddManyMusicToPlaylist(LoadAudioFile.LoadMusicFrom("C:/CloudMusic"));
-        });
 
         #endregion
 
@@ -127,8 +139,9 @@ namespace SharpMusic.UI.ViewModels
 
         public Double PlayTime => _player.PlayTime.TotalSeconds;
 
-        public string PosAndTime =>
-            $"{_player.Position.Minutes:00}:{_player.Position.Seconds:00}/{_player.PlayTime.Minutes:00}:{_player.PlayTime.Seconds:00} ";
+        public string PosAndTime => _player.State != PlaybackState.Stopped?
+            $"{_player.Position.Minutes:00}:{_player.Position.Seconds:00}/{_player.PlayTime.Minutes:00}:{_player.PlayTime.Seconds:00} "
+            : "";
 
         #endregion
 
