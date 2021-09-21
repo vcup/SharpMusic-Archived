@@ -18,6 +18,36 @@
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
+	
+	<Window.Styles>
+		<Style Selector="Border#PlayingList[IsHitTestVisible=True]">
+			<Setter Property="IsVisible" Value="True"/>
+			<Style.Animations>
+				<Animation Duration="0:0:0.1">
+					<KeyFrame Cue="0%">
+						<Setter Property="Opacity" Value="0.0"/>
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="Opacity" Value="1.0"/>
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+		<Style Selector="Border#PlayingList[IsHitTestVisible=False]">
+			<Setter Property="IsVisible" Value="False"/>
+			<Style.Animations>
+				<Animation Duration="0:0:0.1">
+					<KeyFrame Cue="0%">
+						<Setter Property="IsVisible" Value="True"/>
+						<Setter Property="Opacity" Value="1.0"/>
+					</KeyFrame>
+					<KeyFrame Cue="100%">
+						<Setter Property="Opacity" Value="0.0"/>
+					</KeyFrame>
+				</Animation>
+			</Style.Animations>
+		</Style>
+	</Window.Styles>
 
 	<Panel>
 		<ExperimentalAcrylicBorder IsHitTestVisible="False">
@@ -73,13 +103,16 @@
 				</ItemsControl>
 				<ItemsControl Items="{Binding Controls}"/>
 			</StackPanel>
-			<Border Margin="10 20">
+			<Border Margin="10 20" Name="SecondaryView">
 				<ContentControl Content="{Binding SecondaryViewModel}"/>
 			</Border>
 		</DockPanel>
-		<Border IsVisible="{Binding PlayinglistIsVisible}">
+		<Border IsHitTestVisible="{Binding PlayinglistIsHitTestVisible}"
+		        Name="PlayingList">
 			<local:PlayingListView DataContext="{Binding PlayingListViewModel}"
-				                   HorizontalAlignment="Left" Margin="0 40"/>
+				                   HorizontalAlignment="Left" VerticalAlignment="Top"
+				                   Margin="0 40" Height="520" Background="Black" Opacity="0.75">
+			</local:PlayingListView>
 		</Border>
 	</Panel>
 </Window>

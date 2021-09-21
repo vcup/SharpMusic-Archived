@@ -54,11 +54,9 @@ namespace SharpMusic.UI.ViewModels
                     while (true)
                     {
                         Thread.Sleep(100);
-                        if (_player.State != PlaybackState.Stopped)
-                        {
-                            this.RaisePropertyChanged(nameof(Position));
-                            this.RaisePropertyChanged(nameof(PosAndTime));
-                        }
+                        if (_player.State == PlaybackState.Stopped) continue;
+                        this.RaisePropertyChanged(nameof(Position));
+                        this.RaisePropertyChanged(nameof(PosAndTime));
                     }
                 }
             );
@@ -104,16 +102,15 @@ namespace SharpMusic.UI.ViewModels
         
         public ICommand StopPlay => ReactiveCommand.Create(_player.Stop);
 
-        public bool PlayinglistIsVisible { get; set; }
+        private bool _playinglistIsHitTestVisible;
+        public bool PlayinglistIsHitTestVisible {
+            get => _playinglistIsHitTestVisible;
+            set => this.RaiseAndSetIfChanged(ref _playinglistIsHitTestVisible, value, nameof(PlayinglistIsHitTestVisible));
+        }
         
         public PlaylistViewModel PlayingListViewModel { get; set; }
         
-        public ICommand ShowPlaylist => ReactiveCommand.Create(() =>
-            {
-                PlayinglistIsVisible = !PlayinglistIsVisible;
-                this.RaisePropertyChanged(nameof(PlayinglistIsVisible));
-            }
-        );
+        public ICommand ShowPlaylist => ReactiveCommand.Create(() => PlayinglistIsHitTestVisible = !PlayinglistIsHitTestVisible);
 
         #endregion
 
