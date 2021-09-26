@@ -111,8 +111,7 @@
 		        Name="PlayingList">
 			<local:PlayingListView DataContext="{Binding PlayingListViewModel}"
 				                   HorizontalAlignment="Left" VerticalAlignment="Top"
-				                   Margin="0 40" Height="520" Background="Black" Opacity="0.75">
-			</local:PlayingListView>
+				                   Margin="0 40" Height="520" Background="Black" Opacity="0.75"/>
 		</Border>
 	</Panel>
 </Window>

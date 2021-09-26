@@ -8,15 +8,15 @@
     <Design.DataContext>
         <vm:AlbumViewModel/>
     </Design.DataContext>
-    <StackPanel Width="175">
+    <StackPanel Spacing="5" Width="175">
         <Border CornerRadius="10" ClipToBounds="True">
-            <Panel>
+            <Canvas Width="175" Height="175">
                 <Image Width="175" Height="175"
                        Source="{Binding Cover}"
                        Margin="0 0 0 5"/>
-            </Panel>
+            </Canvas>
         </Border>
-        <TextBlock Text="{Binding Title}" Margin="2"/>
-        <TextBlock Text="{Binding Artists}" Margin="2"/>
+        <TextBlock Text="{Binding Title}" Margin="2" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding Artists}" Margin="2" HorizontalAlignment="Center"/>
     </StackPanel>
 </UserControl>

@@ -20,7 +20,7 @@
             
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <local:AlbumsView/>
+                    <local:AlbumView/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -28,13 +28,6 @@
         <!--在后端代码中将控件添加到ViewModel.Controls以将其显示到主视图-->
             <ItemsControl>
             </ItemsControl>
-        </ContentControl>
-        <ContentControl IsVisible="False" Name="SwitchButton">
-            <Button Command="{Binding SwitchToThisViewCommand}"
-                    Width="30" Height="30">
-                <Svg Path="/Assets/MusicsViewIcon.svg" Width="30" Height="30"
-                     VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Button>
         </ContentControl>
     </Panel>
 </UserControl>

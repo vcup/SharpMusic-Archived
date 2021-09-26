@@ -9,7 +9,7 @@ namespace SharpMusic.UI.ViewModels
 {
     public class AlbumViewModel : ViewModelBase,  ITertiaryViewModel
     {
-        private Album _album;
+        private readonly Album _album;
         
         public AlbumViewModel(Album album)
         {
@@ -18,7 +18,7 @@ namespace SharpMusic.UI.ViewModels
 
         public Bitmap Cover => new Bitmap(new MemoryStream(_album.Cover.Data.Data));
         public string Title => _album.Name;
-        public string Artists => string.Join("\\", _album.Artists.Select(a => a.Name));
+        public string Artists => string.Join(@"\", _album.TracksArtists.Select(a => a.Name));
         public ObservableCollection<Control> Controls { get; set; } = new();
         public ObservableCollection<IFourthViewModel> Items { get; set; } = new();
     }

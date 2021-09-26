@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using TagLib;
@@ -12,7 +13,7 @@ namespace SharpMusic.Backend.Information
         private List<string> _aliasNames;
         private List<Music> _tracks;
         private List<Artist> _artists;
-        public static readonly HashSet<Album> AllAlbums = new();
+        public static readonly ObservableCollection<Album> AllAlbums = new();
 
         public Album()
         {
@@ -47,6 +48,8 @@ namespace SharpMusic.Backend.Information
         public IList<Music> Tracks => _tracks;
 
         public IList<Artist> Artists => _artists;
+
+        public IEnumerable<Artist> TracksArtists => _tracks.SelectMany(music => music.Artists);
 
         public int Lenght => Tracks.Count;
         
