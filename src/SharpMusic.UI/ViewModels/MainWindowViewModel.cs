@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -8,8 +9,6 @@ using Avalonia.Controls;
 using DynamicData;
 using ManagedBass;
 using ReactiveUI;
-using SharpMusic.Backend.Disk;
-using SharpMusic.Backend.Information;
 using SharpMusic.Backend.Play;
 
 namespace SharpMusic.UI.ViewModels
@@ -18,6 +17,11 @@ namespace SharpMusic.UI.ViewModels
     {
         public MainWindowViewModel()
         {
+            List<ISecondaryViewModel> viewModels = new()
+            {
+                new MusicsViewModel(),
+                new AlbumsViewModel(),
+            };
             Items.CollectionChanged += (sender, _) =>
             {
                 var newItem = ((ObservableCollection<ISecondaryViewModel>) sender!).Last();
@@ -27,7 +31,6 @@ namespace SharpMusic.UI.ViewModels
                     Controls.Clear();
                     Controls.Add(((ObservableCollection<Control>) controls!).Last());   
                 });
-                newItem.SwitchToThisViewModel = ReactiveCommand.Create(() => SecondaryViewModel = newItem);
                 if (newItem.GetType() == typeof(MusicsViewModel))
                 {
                     ((MusicsViewModel)newItem).Items.CollectionChanged += (_, args) =>
@@ -38,11 +41,10 @@ namespace SharpMusic.UI.ViewModels
                     };
                 }
             };
-            SecondaryViewModel = new MusicsViewModel();
-            Items.Add(new AlbumsViewModel());
+            Items.AddRange(viewModels);
+            
             _player = new(new() {Name = "NowPlaying", Description = "rt"});
             PlayingListViewModel = new(_player.Playlist);
-            
             _player.PlayBackStartEvent += (sender, _) =>
             {
                 var m = sender.PlayingMusic;
@@ -60,24 +62,6 @@ namespace SharpMusic.UI.ViewModels
                     }
                 }
             );
-        }
-
-        private int _secondaryViewModelIndex;
-        public ISecondaryViewModel SecondaryViewModel
-        {
-            get => Items[_secondaryViewModelIndex];
-            set
-            {
-                if (Items.Contains(value))
-                {
-                    this.RaiseAndSetIfChanged(ref _secondaryViewModelIndex, Items.IndexOf(value));
-                    return;
-                }
-
-                _secondaryViewModelIndex = Items.Count;
-                Items.Add(value);
-                this.RaisePropertyChanged(nameof(Items));
-            }
         }
 
         public ObservableCollection<Control> Controls { get; set; } = new();
@@ -111,6 +95,8 @@ namespace SharpMusic.UI.ViewModels
         public PlaylistViewModel PlayingListViewModel { get; set; }
         
         public ICommand ShowPlaylist => ReactiveCommand.Create(() => PlayinglistIsHitTestVisible = !PlayinglistIsHitTestVisible);
+
+        public ICommand ShowScanMusicWindow => ((MusicsViewModel)Items[0]).ScanMusicCommand;
 
         #endregion
 

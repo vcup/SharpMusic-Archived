@@ -65,6 +65,9 @@
 	    			<Style Selector="Button.PlayControl">
 	    				<Setter Property="Width" Value="35"/>
 	    				<Setter Property="Height" Value="35"/>
+	                    <Setter Property="Background">
+		                    <SolidColorBrush Color="White" Opacity="0.05"/>
+	                    </Setter>
 	    			</Style>
 		            <Style Selector="TextBlock.TitleBarText">
 			            <Setter Property="VerticalAlignment" Value="Center"/>
@@ -72,39 +75,57 @@
 			            <Setter Property="IsHitTestVisible" Value="False"/>
 		            </Style>
 	            </WrapPanel.Styles>
-		        <Button Classes="PlayControl" Command="{Binding ShowPlaylist}"/>
-	    		<Button Classes="PlayControl" Command="{Binding PlayPrev}"/>
-	    		<Button Classes="PlayControl" Command="{Binding PlayOrPause}"/>
-	    		<Button Classes="PlayControl" Command="{Binding PlayNext}"/>
+		        <Button Classes="PlayControl" Command="{Binding ShowPlaylist}" Content="三"/>
+	    		<Button Classes="PlayControl" Command="{Binding PlayPrev}" Content="＜"/>
+	    		<Button Classes="PlayControl" Command="{Binding PlayOrPause}" Content="||"/>
+	    		<Button Classes="PlayControl" Command="{Binding PlayNext}" Content="＞"/>
 		        
 		        <TextBlock Text="{Binding PosAndTime}"
 		                   Classes="TitleBarText" Margin="10 0 5 0"
 		                   Width="85"/>
 		        <TextBlock Text="{Binding PlayingMusicInfo}"
-		                   Classes="TitleBarText" Margin="5 0"/>
+		                   Classes="TitleBarText" Margin="5 0"
+		                   Width="500"/>
+		        
+		        <Button Classes="PlayControl" Command="{Binding ShowScanMusicWindow}">
+			        <Svg Path="/Assets/ScanMusicButtonIcon.svg" Width="24" Height="24"/>
+		        </Button>
 	    	</WrapPanel>
 			<ProgressBar Value="{Binding Position}" Maximum="{Binding PlayTime}"/>
 		</StackPanel>
 		
 		<DockPanel Margin="20 45 20 15">
-			<StackPanel Margin="5 40 10 40"
-                       Width="30" Height="450"
-                       DockPanel.Dock="Right">
-				<ItemsControl Items="{Binding Items}" Margin="0 0 0 5">
-					<ItemsControl.DataTemplates>
-						<DataTemplate>
-							<Button Command="{Binding SwitchToThisViewModel}"
-							        Width="30" Height="30" Background="Transparent">
-								<Svg Path="{Binding SvgIconPath}"
-								     Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-							</Button>
-						</DataTemplate>
-					</ItemsControl.DataTemplates>
-				</ItemsControl>
-				<ItemsControl Items="{Binding Controls}"/>
-			</StackPanel>
 			<Border Margin="10 20" Name="SecondaryView">
-				<ContentControl Content="{Binding SecondaryViewModel}"/>
+				<TabControl TabStripPlacement="Right" Items="{Binding Items}">
+					<TabControl.ItemTemplate>
+						<DataTemplate>
+							<TabItem>
+								<TabItem.Header>
+									<Svg Path="{Binding SvgIconPath}" Width="25" Height="25" Margin="3"/>
+								</TabItem.Header>
+								<ContentControl Content="{Binding}"/>
+							</TabItem>
+						</DataTemplate>
+					</TabControl.ItemTemplate>
+					<TabControl.Styles>
+						<Styles>
+							<Style Selector="TabControl Border DockPanel ItemsPresenter Svg">
+								<Setter Property="IsVisible" Value="False"/>
+							</Style>
+							<Style Selector="TabItem:focus">
+	                    		<Setter Property="Margin" Value="0 0 0 0"/>
+	                    		<Setter Property="Padding" Value="0"/>
+	                    	</Style>
+	                    	<Style Selector="TabItem">
+	                    		<Setter Property="Margin" Value="0 0 0 0"/>
+	                    		<Setter Property="Padding" Value="0"/>
+	                    	</Style>
+	                    	<Style Selector="TabItem">
+	                    		<Setter Property="MinHeight" Value="25"/>
+	                    	</Style>
+						</Styles>
+					</TabControl.Styles>
+				</TabControl>
 			</Border>
 		</DockPanel>
 		<Border IsHitTestVisible="{Binding PlayinglistIsHitTestVisible}"

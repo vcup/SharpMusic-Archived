@@ -23,8 +23,6 @@ namespace SharpMusic.UI.ViewModels
     public interface ISecondaryViewModel : IViewModelConform<ITertiaryViewModel>
     {
         public string SvgIconPath { get; set; }
-        
-        public  ICommand SwitchToThisViewModel { get; set; }
     }
 
     public interface ITertiaryViewModel : IViewModelConform<IFourthViewModel>

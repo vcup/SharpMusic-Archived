@@ -15,7 +15,6 @@ namespace SharpMusic.UI.ViewModels
     {
         public AlbumsViewModel()
         {
-            SwitchToThisViewModel = ReactiveCommand.Create(() => { });
             Items.AddRange(Album.AllAlbums.Select(a => new AlbumViewModel(a)));
             Album.AllAlbums.CollectionChanged += (sender, args) =>
             {
@@ -30,6 +29,5 @@ namespace SharpMusic.UI.ViewModels
         
         public string SvgIconPath { get; set; } = "/Assets/AlbumsViewIcon.svg";
         
-        public ICommand SwitchToThisViewModel { get; set; }
     }
 }
